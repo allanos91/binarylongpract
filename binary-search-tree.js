@@ -82,7 +82,12 @@ class TreeNode {
 
 
     inOrderTraversal(currentNode = this.root) {
-      // Your code here
+        if (!currentNode) {
+            return
+        }
+        this.inOrderTraversal(currentNode.left)
+        console.log(currentNode)
+        this.inOrderTraversal(currentNode.right)
     }
 
 

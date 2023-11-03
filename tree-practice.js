@@ -149,12 +149,74 @@ function getParentNode (rootNode, target) {
 }
 
 function inOrderPredecessor (rootNode, target) {
-  // Your code here
+  let arr = []
+  if (findMinBST(rootNode) === target) {
+    return null
+  }
+  let helpFunc = (currentNode) => {
+    if (!currentNode) {
+      return
+    }
+    helpFunc(currentNode.left)
+    arr.push(currentNode.val)
+    helpFunc(currentNode.right)
+  }
+  helpFunc(rootNode)
+  let index = arr.indexOf(target)
+  return arr[index-1]
+
+}
+
+let getNode = (rootNode, target) => {
+  let queue = [rootNode]
+  while (queue.length) {
+    let currNode = queue.shift()
+    if (rootNode.val === target) {
+      return currNode
+    }
+    if (currNode.left) {
+      queue.push(currNode.left)
+    }
+
+    if (currNode.right) {
+      queue.push(currNode.right)
+    }
+  }
+
 }
 
 function deleteNodeBST(rootNode, target) {
   // Do a traversal to find the node. Keep track of the parent
+  let pNode = getParentNode(rootNode, target)
+  let direction = ''
+  if (!pNode) {
+    return undefined
+  }
+  let targetNode = null
+  if (pNode.left) {
+    if (pNode.left.val === target) {
+      direction = 'left'
+    }
+  }
+  // if (pNode.left.val === target) {
+  //   direction = 'left'
+  // }
+  else if (pNode.right) {
+    if (pNode.right) {
+      if (pNode.right.val === target) {
+        direction = 'right'
+      }
+    }
+  }
+  targetNode = pNode[direction]
 
+  if (!targetNode.left && !targetNode.right) {
+    pNode[direction] = null
+  } else if (!targetNode.left && targetNode.right) {
+    pNode[direction] = targetNode.right
+  } else if (!targetNode.right && targetNode.left) {
+    pNode[direction] = targetNode.left
+  }
   // Undefined if the target cannot be found
 
   // Set target based on parent
